@@ -1,0 +1,13 @@
+/* স্প্ল্যাশ স্ক্রিনের এক্সট্রা স্টাইল */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1.5s linear infinity;
+}
+
+/* স্মুথ স্ক্রল ও থিম ইনজেকশন */
+body {
+    background-color: #030712;
+}
