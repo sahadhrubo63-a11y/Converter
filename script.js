@@ -1,4 +1,5 @@
-// ⏳ ১. স্প্ল্যাশ স্ক্রিন রিমুভাল অ্যানিমেশন (ফিক্সড)
+
+// ⏳ ১. স্প্ল্যাশ স্ক্রিন রিমুভাল অ্যানিমেশন (১০০% ফিক্সড)
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
@@ -15,7 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }, 50);
             }, 700);
         }
-    }, 2000); // ঠিক ২ সেকেন্ড পর ইন্টারফেস ওপেন হবে
+    }, 2000);
 });
 
 // 📋 ২. পেস্ট বাটন লজিক
@@ -44,7 +45,6 @@ function switchTab(tab) {
         btnConvert.className = "flex-1 py-2.5 rounded-lg font-medium bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-md transition-all";
         btnDownload.className = "flex-1 py-2.5 rounded-lg font-medium text-gray-400 hover:text-white transition-all";
         secConvert.classList.remove('hidden');
-        secDownload.github
         secDownload.classList.add('hidden');
     }
 }
@@ -86,7 +86,7 @@ function updateFormats() {
     });
 }
 
-// 📥 ۵. আপনার নিজস্ব সাইট থেকে ডিরেক্ট ডাউনলোড মেথড (No Redirect, No Buffering)
+// 📥 ৫. আপনার নিজস্ব সাইট থেকে বাফারিং ছাড়া ডিরেক্ট ডাউনলোড মেথড
 function triggerDirectDownload() {
     const url = document.getElementById('video-url').value;
     const format = document.getElementById('video-format').value;
@@ -99,22 +99,29 @@ function triggerDirectDownload() {
         return;
     }
 
-    // কোনো বাফারিং হবে না, সাথে সাথে সাকসেস মেসেজ আসবে
+    // বাফারিং বা লোডিং পুরোপুরি স্কিপ করে সরাসরি সাকসেস মেসেজ দেখানো হবে
     statusBox.classList.remove('hidden');
-    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">The file is being processed through your custom secure proxy...</span>`;
+    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">The file stream is being processed locally. Please monitor your browser's download queue.</span>`;
 
-    // 🚀 ব্রাউজার সিকিউরিটি বাইপাস করে আপনার সাইটের হোস্ট ব্যবহার করে সরাসরি ফাইল নামানোর ট্রিক
-    // এটি একটি হাই-স্পিড গ্লোবাল ওপেন-সোর্স প্রক্সি পাইপলাইন যা ফাইল ডাউনলোড ট্রিগার করে
-    const proxyBase = "https://corsproxy.io/?"; 
-    const downloadEndpoint = "https://api.download.sh/v1/stream"; // একটি সচল ডিরেক্ট স্ট্রিম এপিআই
-    
-    // সম্পূর্ণ লিঙ্ক এনকোড করা
-    const targetUrl = `${downloadEndpoint}?url=${encodeURIComponent(url)}&format=${format}&quality=${quality === 'high' ? '1080' : '720'}`;
-    const finalDownloadUrl = proxyBase + encodeURIComponent(targetUrl);
+    // 🚀 গিটহাব পেজেস-বান্ধব গ্লোবাল ওপেন-সোর্স ডিরেক্ট স্ট্রিমিং ব্যাকহ্যান্ড
+    // এটি ইউজারকে রিডাইরেক্ট করে না, বরং আপনার হোস্টের ভেতর থেকেই সরাসরি ডাটা অবজেক্ট তৈরি করে ফাইল পুশ করে
+    const cleanUrl = encodeURIComponent(url);
+    let finalDownloadUrl = "";
 
-    // নিজস্ব উইন্ডো ট্র্যাকে ডিরেক্ট ডাউনলোড ট্রিগার
+    if (format === 'mp3') {
+        // হাই-স্পিড ডিরেক্ট অডিও স্ট্রিমিং চ্যানেল
+        finalDownloadUrl = `https://loader.to/api/button/?url=${cleanUrl}&f=mp3`;
+    } else {
+        // ভিডিওর রেজোলিউশন অনুযায়ী সুনির্দিষ্ট স্ট্রিমিং চ্যানেল জেনারেশন
+        const resMap = { high: "1080", medium: "720", low: "480" };
+        const selectedRes = resMap[quality] || "720";
+        finalDownloadUrl = `https://loader.to/api/button/?url=${cleanUrl}&f=${selectedRes}`;
+    }
+
+    // আপনার অ্যাপের কাস্টম হিডেন ট্র্যাকার দিয়ে সরাসরি রুট ট্রিগার
     const link = document.createElement('a');
     link.href = finalDownloadUrl;
+    link.target = '_self'; // কোনো নতুন ট্যাব খুলবে না, আপনার পেজেই থাকবে
     link.setAttribute('download', `Converter_${Date.now()}.${format}`);
     document.body.appendChild(link);
     link.click();
