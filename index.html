@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter - Universal Downloader & Converter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-950 text-white font-sans overflow-hidden">
+
+    <!-- 🎨 ১. স্প্ল্যাশ স্ক্রিন অ্যানিমেশন -->
+    <div id="splash-screen" class="fixed inset-0 bg-gray-950 flex flex-col items-center justify-center z-50 transition-opacity duration-700">
+        <div class="relative w-24 h-24 flex items-center justify-center">
+            <!-- ঘূর্নয়মান নিয়ন রিং -->
+            <div class="absolute inset-0 border-4 border-t-emerald-500 border-r-transparent border-b-cyan-500 border-l-transparent rounded-full animate-spin"></div>
+            <!-- মাঝখানের আইকন -->
+            <span class="text-4xl">🔄</span>
+        </div>
+        <h1 class="text-4xl font-extrabold mt-6 tracking-widest bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent animate-pulse">
+            CONVERTER
+        </h1>
+        <p class="text-gray-500 text-sm mt-2">Transforming Media Easily...</p>
+    </div>
+
+    <!-- 🖥️ ২. মেইন ইন্টারফেস -->
+    <div id="main-content" class="hidden min-h-screen flex flex-col items-center p-6 max-w-4xl mx-auto opacity-0 transition-opacity duration-1000">
+        
+        <!-- হেডার -->
+        <header class="text-center my-8">
+            <h1 class="text-3xl font-black text-emerald-400 tracking-wide flex items-center justify-center gap-2">
+                🔄 CONVERTER
+            </h1>
+            <p class="text-gray-400 text-sm mt-1">Download & Convert any Social Media Video or Files</p>
+        </header>
+
+        <!-- ট্যাব সিলেকশন বাটন -->
+        <div class="flex bg-gray-900 p-1.5 rounded-xl mb-8 w-full max-w-md shadow-lg border border-gray-800">
+            <button id="tab-download" class="flex-1 py-2.5 rounded-lg font-medium bg-gradient-to-r from-emerald-500 to-cyan-500 text-white transition-all shadow-md" onclick="switchTab('download')">
+                📥 Downloader
+            </button>
+            <button id="tab-convert" class="flex-1 py-2.5 rounded-lg font-medium text-gray-400 hover:text-white transition-all" onclick="switchTab('convert')">
+                🔄 File Converter
+            </button>
+        </div>
+
+        <!-- 📥 সেকশন ১: ভিডিও ডাউনলোডার -->
+        <div id="downloader-section" class="w-full bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
+            <div class="mb-5">
+                <label class="block text-gray-400 text-sm font-medium mb-2">Paste Video Link (YouTube, FB, Insta, Twitter, Threads)</label>
+                <input type="url" id="video-url" placeholder="https://example.com/video/..." class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-emerald-500 transition-all">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-gray-400 text-sm font-medium mb-2">Format</label>
+                    <select id="video-format" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
+                        <option value="mp4">MP4 (Video)</option>
+                        <option value="mp3">MP3 (Audio)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-sm font-medium mb-2">Resolution / Quality</label>
+                    <select id="video-quality" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
+                        <option value="high">High Quality (1080p / 320kbps)</option>
+                        <option value="medium">Medium Quality (720p / 192kbps)</option>
+                        <option value="low">Low Quality (480p / 128kbps)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="startDownload()" class="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold py-3.5 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-emerald-500/10">
+                ⏬ Get Download Link
+            </button>
+        </div>
+
+        <!-- 🔄 সেকশন ২: ফাইল কনভার্টার (ডিফল্টভাবে হাইড থাকবে) -->
+        <div id="converter-section" class="w-full bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl hidden">
+            <div class="border-2 border-dashed border-gray-700 hover:border-cyan-500 rounded-2xl p-8 text-center cursor-pointer mb-5 bg-gray-950/50 transition-all">
+                <input type="file" id="file-input" class="hidden" onchange="handleFileSelect(this)">
+                <label for="file-input" class="cursor-pointer">
+                    <span class="text-4xl block mb-2">📁</span>
+                    <span id="file-label" class="text-gray-400 font-medium">Drag & Drop or Click to Upload File</span>
+                </label>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-400 text-sm font-medium mb-2">Convert To Format</label>
+                <select id="target-format" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500">
+                    <option value="mp4">MP4 (Video)</option>
+                    <option value="mp3">MP3 (Audio)</option>
+                    <option value="mkv">MKV (Video)</option>
+                    <option value="avi">AVI (Video)</option>
+                    <option value="png">PNG (Image)</option>
+                    <option value="jpg">JPG (Image)</option>
+                </select>
+            </div>
+
+            <button onclick="startConversion()" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold py-3.5 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-cyan-500/10">
+                🔄 Convert & Download
+            </button>
+        </div>
+
+        <!-- স্ট্যাটাস বা লোডিং মেসেজ বক্স -->
+        <div id="status-box" class="w-full mt-4 p-4 rounded-xl bg-gray-900 border border-gray-800 text-center hidden">
+            <p id="status-text" class="text-sm text-gray-300"></p>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
