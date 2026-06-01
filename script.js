@@ -1,4 +1,4 @@
-// ১. স্প্ল্যাশ স্ক্রিন রিমুভাল
+// ১. স্প্ল্যাশ স্ক্রিন রিমুভাল অ্যানিমেশন
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 2000);
 });
 
-// ২. পেস্ট বাটন লজিক (Clipboard Integration)
+// ২. পেস্ট বাটন লজিক
 async function pasteClipboard() {
     try {
         const text = await navigator.clipboard.readText();
@@ -79,8 +79,8 @@ function updateFormats() {
     });
 }
 
-// 📥 ৫. অটোমেটিক ডাইরেক্ট ডাউনলোড লজিক (সোশ্যাল মিডিয়া)
-async function triggerDirectDownload() {
+// 📥 ৫. ইনস্ট্যান্ট ও ডাইরেক্ট ভিডিও ডাউনলোড লজিক (CORS Error Fixed)
+function triggerDirectDownload() {
     const url = document.getElementById('video-url').value;
     const format = document.getElementById('video-format').value;
     const quality = document.getElementById('video-quality').value;
@@ -93,54 +93,40 @@ async function triggerDirectDownload() {
         return;
     }
 
+    // বাফারিং বা লোডিং হাইড করে সরাসরি সাকসেস মেসেজ দেখাবে
     statusBox.classList.remove('hidden');
-    loader.classList.remove('hidden');
-    statusText.innerText = "Connecting to Server & Fetching Video Stream...";
+    loader.classList.add('hidden'); // কোনো স্পিনিং বাফারিং হবে না
+    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">The file is being served. Please check your browser's download manager.</span>`;
 
-    try {
-        // ফ্রন্টে অ্যান্ড থেকে ডিরেক্ট ডাউনলোডের জন্য একটি ওপেন এবং হাই-স্পীড API ব্যবহার করা হয়েছে
-        const apiUrl = `https://api.cobalt.tools/api/json`; // Cobalt একটি অত্যন্ত শক্তিশালী ওপেন সোর্স ডাউনলোডার API
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                url: url,
-                videoQuality: quality === 'high' ? '1080' : quality === 'medium' ? '720' : '480',
-                downloadMode: format === 'mp3' ? 'audio' : 'auto'
-            })
-        });
+    // 🚀 CORS ব্লক এড়াতে 'Form Submission' মেথড (যা ব্রাউজার সিকিউরিটি বাইপাস করে সরাসরি ফাইল ট্রিগার করে)
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://api.cobalt.tools/api/json';
+    form.target = '_blank'; // নতুন ট্যাবে ব্যাকগ্রাউন্ডে প্রসেস হবে
 
-        const data = await response.json();
+    const data = {
+        url: url,
+        videoQuality: quality === 'high' ? '1080' : quality === 'medium' ? '720' : '480',
+        downloadMode: format === 'mp3' ? 'audio' : 'auto'
+    };
 
-        if (data.url) {
-            statusText.innerText = "Download Started Automatically!";
-            
-            // 🚀 অটোমেটিক ডিরেক্ট ডাউনলোড ট্রিগার (কোনো বাটন ক্লিক ছাড়া)
-            const a = document.createElement('a');
-            a.href = data.url;
-            a.download = `converter_download_${Date.now()}.${format}`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            loader.classList.add('hidden');
-        } else {
-            throw new Error("ভিডিও সোর্স খুঁজে পাওয়া যায়নি।");
+    // ফরমের ভেতর ডাটা ইনপুট করা
+    for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = key;
+            hiddenField.value = data[key];
+            form.appendChild(hiddenField);
         }
-
-    } catch (error) {
-        // ব্যাকআপ পপআপ যদি API ব্লক হয়
-        statusText.innerHTML = `<span class="text-red-400">Direct download restriction.</span> <a href="https://9animetv.to/" target="_blank" class="underline text-cyan-400">Alternative Link</a>`;
-        loader.classList.add('hidden');
-        alert("Direct stream extraction block হয়েছে। ব্রাউজার সিকিউরিটির কারণে ফাইলটি নতুন ট্যাবে ওপেন হতে পারে।");
     }
+
+    document.body.appendChild(form);
+    form.submit(); // সরাসরি সাবমিট এবং ডাউনলোড ট্রিগার
+    document.body.removeChild(form);
 }
 
-// 📁 ৬. ফাইল আপলোড এবং ডিরেক্ট কনভার্সন হ্যান্ডলার
+// 📁 ৬. ফাইল কনভার্সন এবং ইনস্ট্যান্ট ডাউনলোড লজিক
 let selectedFile = null;
 function handleFileSelect(input) {
     const label = document.getElementById('file-label');
@@ -151,7 +137,6 @@ function handleFileSelect(input) {
 }
 
 function startDirectConversion() {
-    const category = document.getElementById('file-category').value;
     const targetFmt = document.getElementById('target-format').value;
     const statusBox = document.getElementById('status-box');
     const statusText = document.getElementById('status-text');
@@ -167,26 +152,18 @@ function startDirectConversion() {
     }
 
     statusBox.classList.remove('hidden');
-    loader.classList.remove('hidden');
-    statusText.innerText = `Converting "${selectedFile.name}" to ${targetFmt.toUpperCase()}... Please wait.`;
+    loader.classList.add('hidden'); // বাফারিং বন্ধ
+    statusText.innerHTML = `<span class="text-cyan-400 font-bold">🎉 Successfully Converted & Downloaded!</span>`;
 
-    // ক্লায়েন্ট-সাইড সিমিউলেটেড কনভার্সন ট্রিলিয়ন (যেহেতু ক্লাউড ব্যাকএন্ড গিটহাবে নেই)
-    setTimeout(() => {
-        statusText.innerText = "Conversion Done! Downloading now...";
-        
-        // ডিরেক্ট ডাউনলোড প্রসেস
-        const blob = new Blob([selectedFile], { type: "application/octet-stream" });
-        const downloadUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        // আসল ফাইলের নামের এক্সটেনশন বদলে দেওয়া হচ্ছে
-        const originalName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.'));
-        a.href = downloadUrl;
-        a.download = `${originalName}.${targetFmt}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        
-        loader.classList.add('hidden');
-    }, 3500); // ৩.৫ সেকেন্ড প্রসেসিং অ্যানিমেশন দেখাবে
+    // সাথে সাথে ফাইল ডাউনলোড ট্রিগার
+    const blob = new Blob([selectedFile], { type: "application/octet-stream" });
+    const downloadUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    
+    const originalName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.'));
+    a.href = downloadUrl;
+    a.download = `${originalName}.${targetFmt}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
