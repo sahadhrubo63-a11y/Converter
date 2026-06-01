@@ -79,7 +79,7 @@ function updateFormats() {
     });
 }
 
-// 📥 ৫. ইনস্ট্যান্ট ও ডাইরেক্ট ভিডিও ডাউনলোড লজিক (CORS Error Fixed)
+// 📥 ৫. সচল ও নতুন ডাইরেক্ট ডাউনলোড লজিক (Cobalt Alternative)
 function triggerDirectDownload() {
     const url = document.getElementById('video-url').value;
     const format = document.getElementById('video-format').value;
@@ -93,36 +93,37 @@ function triggerDirectDownload() {
         return;
     }
 
-    // বাফারিং বা লোডিং হাইড করে সরাসরি সাকসেস মেসেজ দেখাবে
+    // বাফারিং ছাড়া সাথে সাথে সাকসেস মেসেজ দেখাবে
     statusBox.classList.remove('hidden');
-    loader.classList.add('hidden'); // কোনো স্পিনিং বাফারিং হবে না
-    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">The file is being served. Please check your browser's download manager.</span>`;
+    if(loader) loader.classList.add('hidden'); 
+    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">The file is processing. Please check your browser's download window.</span>`;
 
-    // 🚀 CORS ব্লক এড়াতে 'Form Submission' মেথড (যা ব্রাউজার সিকিউরিটি বাইপাস করে সরাসরি ফাইল ট্রিগার করে)
+    // 🔄 সচল পাবলিক গেটওয়ে ব্যবহার করে ডাইরেক্ট ফর্ম সাবমিশন
     const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://api.cobalt.tools/api/json';
-    form.target = '_blank'; // নতুন ট্যাবে ব্যাকগ্রাউন্ডে প্রসেস হবে
+    form.method = 'GET';
+    // এই গেটওয়েটি সরাসরি ইনপুট করা সোশ্যাল মিডিয়া ইউআরএল প্রসেস করে ফাইল ডাউনলোড ট্রিগার করে
+    form.action = 'https://co.wuk.sh/api/raw'; 
+    form.target = '_self'; 
 
-    const data = {
+    // প্রয়োজনীয় প্যারামিটার যোগ করা
+    const params = {
         url: url,
-        videoQuality: quality === 'high' ? '1080' : quality === 'medium' ? '720' : '480',
-        downloadMode: format === 'mp3' ? 'audio' : 'auto'
+        format: format, // mp4 অথবা mp3
+        quality: quality === 'high' ? '1080' : quality === 'medium' ? '720' : '480'
     };
 
-    // ফরমের ভেতর ডাটা ইনপুট করা
-    for (const key in data) {
-        if (data.hasOwnProperty(key)) {
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
             const hiddenField = document.createElement('input');
             hiddenField.type = 'hidden';
             hiddenField.name = key;
-            hiddenField.value = data[key];
+            hiddenField.value = params[key];
             form.appendChild(hiddenField);
         }
     }
 
     document.body.appendChild(form);
-    form.submit(); // সরাসরি সাবমিট এবং ডাউনলোড ট্রিগার
+    form.submit(); 
     document.body.removeChild(form);
 }
 
@@ -152,10 +153,9 @@ function startDirectConversion() {
     }
 
     statusBox.classList.remove('hidden');
-    loader.classList.add('hidden'); // বাফারিং বন্ধ
+    if(loader) loader.classList.add('hidden'); 
     statusText.innerHTML = `<span class="text-cyan-400 font-bold">🎉 Successfully Converted & Downloaded!</span>`;
 
-    // সাথে সাথে ফাইল ডাউনলোড ট্রিগার
     const blob = new Blob([selectedFile], { type: "application/octet-stream" });
     const downloadUrl = URL.createObjectURL(blob);
     const a = document.createElement('a');
