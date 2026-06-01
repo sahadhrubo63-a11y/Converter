@@ -1,0 +1,40 @@
+name: Video Downloader Server
+on:
+  repository_dispatch:
+    types: [start-download]
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install yt-dlp & FFmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+        sudo pip install yt-dlp
+
+    - name: Download Media from Link
+      run: |
+        URL="${{ github.event.client_payload.url }}"
+        FORMAT="${{ github.event.client_payload.format }}"
+        QUALITY="${{ github.event.client_payload.quality }}"
+        
+        if [ "$FORMAT" = "mp3" ]; then
+          yt-dlp -x --audio-format mp3 --audio-quality 0 -o "downloads/media.%(ext)s" "$URL"
+        else
+          yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]" -o "downloads/media.%(ext)s" "$URL"
+        fi
+
+    - name: Deploy downloaded file back to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: downloads
+        branch: gh-pages # আপনার গিটহাব পেজেস যে ব্রাঞ্চে আছে
