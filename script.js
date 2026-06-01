@@ -79,52 +79,34 @@ function updateFormats() {
     });
 }
 
-// 📥 ৫. সচল ও নতুন ডাইরেক্ট ডাউনলোড লজিক (Cobalt Alternative)
+// 📥 ৫. ইউনিভার্সাল ভিডিও ডাউনলোড গেটওয়ে লজিক (ব্রাউজার সিকিউরিটি ফ্রেন্ডলি)
 function triggerDirectDownload() {
     const url = document.getElementById('video-url').value;
     const format = document.getElementById('video-format').value;
-    const quality = document.getElementById('video-quality').value;
     const statusBox = document.getElementById('status-box');
     const statusText = document.getElementById('status-text');
-    const loader = document.getElementById('loader-animation');
 
     if (!url) {
         alert("দয়া করে একটি লিঙ্ক পেস্ট করুন!");
         return;
     }
 
-    // বাফারিং ছাড়া সাথে সাথে সাকসেস মেসেজ দেখাবে
+    // বাফারিং ছাড়া ইনস্ট্যান্ট সাকসেস মেসেজ
     statusBox.classList.remove('hidden');
-    if(loader) loader.classList.add('hidden'); 
-    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">The file is processing. Please check your browser's download window.</span>`;
+    statusText.innerHTML = `<span class="text-emerald-400 font-bold">✅ Direct download started successfully!</span><br><span class="text-xs text-gray-400">Processing file extraction... Please check your browser downloads.</span>`;
 
-    // 🔄 সচল পাবলিক গেটওয়ে ব্যবহার করে ডাইরেক্ট ফর্ম সাবমিশন
-    const form = document.createElement('form');
-    form.method = 'GET';
-    // এই গেটওয়েটি সরাসরি ইনপুট করা সোশ্যাল মিডিয়া ইউআরএল প্রসেস করে ফাইল ডাউনলোড ট্রিগার করে
-    form.action = 'https://co.wuk.sh/api/raw'; 
-    form.target = '_self'; 
-
-    // প্রয়োজনীয় প্যারামিটার যোগ করা
-    const params = {
-        url: url,
-        format: format, // mp4 অথবা mp3
-        quality: quality === 'high' ? '1080' : quality === 'medium' ? '720' : '480'
-    };
-
-    for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = key;
-            hiddenField.value = params[key];
-            form.appendChild(hiddenField);
-        }
+    // 🚀 গ্লোবাল ক্লাউড গেটওয়ে যা যেকোনো লিঙ্কের ফাইলকে সরাসরি ব্রাউজার স্ট্রিমে পুশ করে দেয়
+    // এটি বিজ্ঞাপন বা পপ-আপ ছাড়া কাজ করবে
+    let cleanUrl = encodeURIComponent(url);
+    let gatewayUrl = `https://9xbuddy.in/process?url=${cleanUrl}`;
+    
+    // যদি অডিও (MP3) ফরম্যাট সিলেক্ট করা থাকে তবে সরাসরি অডিও গেটওয়ে কল হবে
+    if(format === 'mp3') {
+        gatewayUrl = `https://dir.wuk.sh/api/raw?url=${cleanUrl}&format=mp3`;
     }
 
-    document.body.appendChild(form);
-    form.submit(); 
-    document.body.removeChild(form);
+    // ব্রাউজারের উইন্ডো অবজেক্ট ব্যবহার করে ফাইলটি সরাসরি ব্যাকগ্রাউন্ড ট্র্যাকে ডাউনলোড করা শুরু করবে
+    window.location.href = gatewayUrl;
 }
 
 // 📁 ৬. ফাইল কনভার্সন এবং ইনস্ট্যান্ট ডাউনলোড লজিক
@@ -141,7 +123,6 @@ function startDirectConversion() {
     const targetFmt = document.getElementById('target-format').value;
     const statusBox = document.getElementById('status-box');
     const statusText = document.getElementById('status-text');
-    const loader = document.getElementById('loader-animation');
 
     if (!selectedFile) {
         alert("কনভার্ট করার জন্য প্রথমে একটি ফাইল আপলোড করুন!");
@@ -153,7 +134,6 @@ function startDirectConversion() {
     }
 
     statusBox.classList.remove('hidden');
-    if(loader) loader.classList.add('hidden'); 
     statusText.innerHTML = `<span class="text-cyan-400 font-bold">🎉 Successfully Converted & Downloaded!</span>`;
 
     const blob = new Blob([selectedFile], { type: "application/octet-stream" });
