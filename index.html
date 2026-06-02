@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Converter - Direct Downloader & Multi-Converter</title>
+    <title>Converter - Best Social Downloader & Multi-Converter</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,53 +17,147 @@
         <h1 class="text-4xl font-extrabold mt-6 tracking-widest bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
             CONVERTER
         </h1>
-        <p class="text-gray-500 text-sm mt-2">Instant Download & File Transformation</p>
+        <p class="text-gray-500 text-sm mt-2">Best Web Tools Directory & File Converter</p>
     </div>
 
     <div id="main-content" class="hidden min-h-screen flex flex-col items-center p-4 md:p-6 max-w-4xl mx-auto opacity-0 transition-opacity duration-1000">
         
         <header class="text-center my-6">
             <h1 class="text-3xl font-black text-emerald-400 tracking-wide">🔄 CONVERTER</h1>
-            <p class="text-gray-400 text-sm mt-1">Direct Social Media Downloader & Universal File Converter</p>
+            <p class="text-gray-400 text-sm mt-1">Universal Social Media Downloader Directory & File Converter</p>
         </header>
 
         <div class="flex bg-gray-900 p-1.5 rounded-xl mb-6 w-full max-w-md shadow-lg border border-gray-800">
             <button id="tab-download" class="flex-1 py-2.5 rounded-lg font-medium bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-md transition-all" onclick="switchTab('download')">
-                📥 Downloader
+                📥 Downloader Hub
             </button>
             <button id="tab-convert" class="flex-1 py-2.5 rounded-lg font-medium text-gray-400 hover:text-white transition-all" onclick="switchTab('convert')">
                 🔄 File Converter
             </button>
         </div>
 
-        <div id="downloader-section" class="w-full bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-            <label class="block text-gray-400 text-sm font-medium mb-2">Paste Video Link (YouTube, FB, Insta, Twitter, Threads)</label>
-            <div class="flex gap-2 mb-5">
-                <input type="url" id="video-url" placeholder="https://example.com/video/..." class="flex-1 bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-emerald-500 transition-all">
-                <button onclick="pasteClipboard()" class="bg-gray-800 hover:bg-gray-700 px-4 rounded-xl text-sm font-medium border border-gray-700 transition-all">📋 Paste</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                    <label class="block text-gray-400 text-sm font-medium mb-2">Format</label>
-                    <select id="video-format" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
-                        <option value="mp4">MP4 (Video)</option>
-                        <option value="mp3">MP3 (Audio)</option>
-                    </select>
+        <div id="downloader-section" class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl transition-all hover:border-red-500/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">📺</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-red-500">YouTube Downloader</h3>
+                        <p class="text-xs text-gray-500">Best for Videos, Shorts & MP3 audio</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-gray-400 text-sm font-medium mb-2">Resolution / Quality</label>
-                    <select id="video-quality" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
-                        <option value="high">High Quality (1080p / 320kbps)</option>
-                        <option value="medium">Medium Quality (720p / 192kbps)</option>
-                        <option value="low">Low Quality (480p / 128kbps)</option>
-                    </select>
+                <div class="space-y-2">
+                    <a href="https://y2mate.is/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">Y2Mate (High Speed)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                    <a href="https://ssyoutube.com/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">SaveFrom.net (Popular)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
                 </div>
             </div>
 
-            <button onclick="triggerDirectDownload()" class="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-bold py-3.5 rounded-xl hover:opacity-90 transition-all shadow-lg">
-                ⏬ START DIRECT DOWNLOAD
-            </button>
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl transition-all hover:border-blue-500/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">👥</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-500">Facebook Downloader</h3>
+                        <p class="text-xs text-gray-500">Best for Videos, Reels & Watch</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="https://snapsave.app/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">SnapSave (Full HD 1080p)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                    <a href="https://fdown.net/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">FDown.net (Instant)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl transition-all hover:border-pink-500/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">📸</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-pink-500">Instagram Downloader</h3>
+                        <p class="text-xs text-gray-500">Best for Reels, IGTV, Photos & Stories</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="https://igdownloader.app/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">IGDownloader (Fast Extraction)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                    <a href="https://saveig.app/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">SaveIG (All-in-One)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl transition-all hover:border-purple-500/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">🧵</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-purple-400">Threads Downloader</h3>
+                        <p class="text-xs text-gray-500">Download Videos & Images from Threads</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="https://threadster.app/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">Threadster (HD Quality)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                    <a href="https://threadsdownloader.io/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">ThreadsDownloader.io</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl transition-all hover:border-cyan-500/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">🎵</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-cyan-400">TikTok Downloader</h3>
+                        <p class="text-xs text-gray-500">Download without Watermark</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="https://snaptik.app/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">SnapTik (No Watermark)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                    <a href="https://ssstik.io/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">SSSTik (Fast Link)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl transition-all hover:border-gray-500/50">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">🌐</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-300">Twitter / All Social</h3>
+                        <p class="text-xs text-gray-500">Universal video download platforms</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="https://twdown.net/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">TWDown (For Twitter / X)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                    <a href="https://9xbuddy.in/" target="_blank" class="flex justify-between items-center bg-gray-950 hover:bg-gray-800 border border-gray-800 px-4 py-3 rounded-xl transition-all">
+                        <span class="font-medium text-sm">9XBuddy (Supports 100+ Sites)</span>
+                        <span class="text-xs text-emerald-400">Visit Site ➔</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
 
         <div id="converter-section" class="w-full bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl hidden">
@@ -111,7 +205,6 @@
         </div>
 
         <div id="status-box" class="w-full mt-4 p-4 rounded-xl bg-gray-900 border border-gray-800 text-center hidden">
-            <div id="loader-animation" class="inline-block w-6 h-6 border-2 border-t-emerald-400 border-gray-700 rounded-full animate-spin mb-2 hidden"></div>
             <p id="status-text" class="text-sm text-gray-300">Processing...</p>
         </div>
 
